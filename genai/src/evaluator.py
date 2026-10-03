@@ -17,20 +17,31 @@ Expected Answer: {expected_answer}
 Model Output: {model_output}
 """
 
+def is_mock_key(api_key: str) -> bool:
+    """Helper to detect missing or placeholder OpenAI API keys."""
+    if not api_key:
+        return True
+    key = api_key.strip()
+    return (
+        key.startswith("sk-proj-...") or
+        "your_" in key.lower() or
+        key.startswith("sk-your") or
+        len(key) < 20
+    )
+
 class Evaluator:
     def __init__(self, model_name: str = "gpt-4o"):
         api_key = os.getenv("OPENAI_API_KEY")
-        self.mock_mode = False
-        if not api_key or api_key.startswith("sk-proj-..."):
+        self.mock_mode = is_mock_key(api_key)
+        if self.mock_mode:
             print("[Warning] No valid OpenAI key found. Running Evaluator in MOCK mode.")
-            self.mock_mode = True
         else:
             self.client = OpenAI(api_key=api_key)
         self.model_name = model_name
 
     def evaluate(self, question: str, expected_answer: str, model_output: str) -> Dict[str, Any]:
         """Evaluates the model output against the expected answer using an LLM as a judge."""
-        if getattr(self, "mock_mode", False):
+        if self.mock_mode:
             import random
             is_correct = expected_answer.lower() in model_output.lower()
             return {
@@ -50,13 +61,14 @@ class Evaluator:
                 model=self.model_name,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0,
-                response_format={ "type": "json_object" }
+                response_format={"type": "json_object"}
             )
             result_str = response.choices[0].message.content.strip()
             result_json = json.loads(result_str)
+            
             return {
-                "accuracy": int(result_json.get("accuracy", 0)),
-                "reasoning_quality": int(result_json.get("reasoning_quality", 1)),
+                "accuracy": int(float(result_json.get("accuracy", 0))),
+                "reasoning_quality": int(float(result_json.get("reasoning_quality", 1))),
                 "hallucination_present": bool(result_json.get("hallucination_present", False))
             }
         except Exception as e:
