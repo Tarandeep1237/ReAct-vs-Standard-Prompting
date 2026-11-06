@@ -67,10 +67,3 @@ The goal of this project is to systematically evaluate whether prompting a model
 | **Tool Call Efficiency** | Number of unnecessary tool calls |
 | **Token Cost** | Input + output tokens |
 | **Latency** | Time to final answer |
-
-Author
-Tarandeep Singh
-
-AI/ML Engineering Student
-
-Developed as an AI/ML engineering project to analyse the difference between ReAct and Standard Prompting through the concept of Prompt Engineering.
