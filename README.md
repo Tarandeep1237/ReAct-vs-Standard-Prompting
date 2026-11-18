@@ -1,3 +1,4 @@
+
 # ReAct Prompting vs Standard Prompting: An Experimental Study for Knowledge-Intensive Tasks
 
 ## 📌 Overview
@@ -9,11 +10,13 @@ The goal of this project is to systematically evaluate whether prompting a model
 ## 🧠 Background
 
 ### Standard Prompting
+
 - Relies on the LLM’s internal knowledge.
 - May produce hallucinations or incomplete answers for knowledge-intensive queries.
 - Examples: zero-shot, few-shot, chain-of-thought (CoT) without tool use.
 
 ### ReAct Prompting
+
 - Interleaves **Reasoning** (thought traces) and **Acting** (tool use like search, calculator, or API calls).
 - Enables the model to retrieve external knowledge dynamically.
 - Reduces hallucinations and improves verifiability.
@@ -28,20 +31,23 @@ The goal of this project is to systematically evaluate whether prompting a model
 ## 🧪 Experimental Setup
 
 ### Tasks (Knowledge-Intensive)
-| Task | Description | Example |
-|------|-------------|---------|
+
+| **Task** | **Description** | **Example** |
+|---|---|---|
 | Multi-hop QA | Requires combining facts from multiple sources | “Who was the president when the Berlin Wall fell?” |
 | Fact Verification | Check claim against known knowledge | “Einstein won a Nobel Prize in Chemistry.” |
 | Temporal Reasoning | Events across time | “Was the Model T invented before the first iPhone?” |
 | Counterfactual QA | Contradicts common knowledge | “If water boiled at 50°C, what would happen?” |
 
 ### Models Tested
+
 - GPT-3.5 / GPT-4 (OpenAI)
 - Llama 3 (70B)
 - Claude 3 Haiku / Sonnet
 - (Optional) Mistral 7B
 
 ### Prompting Strategies
+
 - **Standard Zero-shot**  
   `Q: ... A:`
 - **Standard Few-shot (3-shot)**  
@@ -52,6 +58,7 @@ The goal of this project is to systematically evaluate whether prompting a model
   Interleaved `Thought → Action → Observation` loops
 
 ### Tools for ReAct
+
 - Wikipedia search API
 - Web search (DuckDuckGo)
 - Calculator
@@ -59,11 +66,21 @@ The goal of this project is to systematically evaluate whether prompting a model
 
 ## 📊 Evaluation Metrics
 
-| Metric | Description |
-|--------|-------------|
+| **Metric** | **Description** |
+|---|---|
 | **Exact Match (EM)** | For QA tasks |
 | **Factual Accuracy** | Human or LLM-as-judge evaluation |
 | **Reasoning Plausibility** | Logical consistency of thought trace |
 | **Tool Call Efficiency** | Number of unnecessary tool calls |
 | **Token Cost** | Input + output tokens |
 | **Latency** | Time to final answer |
+
+## Author
+
+**Tarandeep Singh**
+
+AI/ML Engineering Student
+
+---
+
+*Developed as an experimental research project to compare ReAct and standard prompting strategies in knowledge-intensive tasks, evaluating factual accuracy, reasoning quality, tool efficiency, token usage, and response latency across Large Language Models.*
